@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Suspended</title>
+    <style>
+        /* Minimal styling as requested */
+        body {
+            margin: 0; /* Remove default body margin */
+            overflow: hidden; /* Prevent scrolling, especially if iframe appears before fullscreen */
+        }
+
+        #main-text {
+            position: absolute; /* Position text at the top-left */
+            top: 20px; /* Small offset from the top edge */
+            left: 20px; /* Small offset from the left edge */
+        }
+
+        #owner-link {
+            color: black; /* Ensure the text "owner" is black */
+            text-decoration: none; /* Remove any underline from "owner" */
+            cursor: pointer; /* Indicate that "owner" is clickable */
+        }
+
+        /* Iframe container styling for when it appears */
+        #iframe-container {
+            position: fixed; /* Keep the iframe container fixed on the screen */
+            top: 0; /* Align to the top of the viewport */
+            left: 0; /* Align to the left of the viewport */
+            width: 100vw; /* Make it full viewport width */
+            height: 100vh; /* Make it full viewport height */
+            display: none; /* Hidden by default until "owner" is clicked */
+            /* No border or shadow as per "no styles" request */
+        }
+
+        iframe {
+            width: 100%; /* Make the iframe fill the width of its container */
+            height: 100%; /* Make the iframe fill the height of its container */
+            border: none; /* Remove default iframe border */
+        }
+    </style>
+</head>
+<body>
+    <!-- Main text displayed on the page -->
+    <div id="main-text">
+        This service has been suspended by its <span id="owner-link">owner</span>.
+    </div>
+
+    <!-- Iframe container, initially hidden -->
+    <div id="iframe-container">
+        <!-- The iframe itself -->
+        <iframe id="suspended-iframe" src="https://scratch.mit.edu/projects/1190507447" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        // Get references to the HTML elements
+        const ownerLink = document.getElementById('owner-link');
+        const iframeContainer = document.getElementById('iframe-container');
+        const suspendedIframe = document.getElementById('suspended-iframe');
+
+        // Event listener for clicking the "owner" link
+        ownerLink.addEventListener('click', function() {
+            // Display the iframe container
+            iframeContainer.style.display = 'block';
+
+            // Attempt to make the iframe go fullscreen
+            if (suspendedIframe.requestFullscreen) {
+                suspendedIframe.requestFullscreen();
+            } else if (suspendedIframe.mozRequestFullScreen) { /* Firefox */
+                suspendedIframe.mozRequestFullScreen();
+            } else if (suspendedIframe.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+                suspendedIframe.webkitRequestFullscreen();
+            } else if (suspendedIframe.msRequestFullscreen) { /* IE/Edge */
+                suspendedIframe.msRequestFullscreen();
+            } else {
+                // Fallback if fullscreen is not supported or allowed
+                console.log("Fullscreen API is not supported or blocked by browser.");
+                // You might want to display the iframe normally if fullscreen fails
+                // For example, by setting iframeContainer's width and height to 100vw/vh here.
+            }
+        });
+    </script>
+</body>
+</html>
